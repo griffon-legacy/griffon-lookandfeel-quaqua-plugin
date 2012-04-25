@@ -1,6 +1,6 @@
 /*
  * griffon-lookandfeel-quaqua: Quaqua Look&Feel for Griffon
- * Copyright 2010 and beyond, Andres Almiray
+ * Copyright 2010-2012 and beyond, Andres Almiray
  *
  * SmartGWT is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License version 3
@@ -23,22 +23,22 @@ eventPackageStart = { type ->
     packagingType = type
 }
 
-quaquaJnlpResources = []
+lookandfeelQuaquaJnlpResources = []
 for(os in ['macosx', 'macosx64']) {
-    quaquaJnlpResources << [os: os, nativelibs: ["webstart/lookandfeel-quaqua-native-${os}.jar"]]
+    lookandfeelQuaquaJnlpResources << [os: os, nativelibs: ["webstart/lookandfeel-quaqua-native-${os}.jar"]]
 }
 
 def eventClosure1 = binding.variables.containsKey('eventCopyLibsEnd') ? eventCopyLibsEnd : {jardir->}
 eventCopyLibsEnd = { jardir ->
     eventClosure1(jardir)
     if (!isPluginProject) {
-        def quaquaLibDir = "${getPluginDirForName('lookandfeel-quaqua').file}/lib".toString()
+        def lookandfeelQuaquaLibDir = "${getPluginDirForName('lookandfeel-quaqua').file}/lib".toString()
         if(!(packagingType in ['applet', 'webstart'])) {
-            ant.fileset(dir: quaquaLibDir, includes: "*.jar").each {
+            ant.fileset(dir: lookandfeelQuaquaLibDir, includes: "*.jar").each {
                 griffonCopyDist(it.toString(), jardir)
             }
-            copyPlatformJars(quaquaLibDir, jardir)
-            copyNativeLibs(quaquaLibDir, jardir)
+            copyPlatformJars(lookandfeelQuaquaLibDir, jardir)
+            copyNativeLibs(lookandfeel-QuaquaLibDir, jardir)
         } else {
             def env = System.getProperty(BuildSettings.ENVIRONMENT)
             if(env == BuildSettings.ENV_DEVELOPMENT) {
@@ -58,10 +58,11 @@ doWithPlatform = { platformOs ->
     def rs = buildConfig.griffon.extensions.resources[platformOs]
     if(!rs) {
         def co = new ConfigObject()
-        co.nativelibs = quaquaJnlpResources.find{it.os == platformOs}.nativelibs
+        co.nativelibs = lookandfeelQuaquaJnlpResources.find{it.os == platformOs}.nativelibs
         buildConfig.griffon.extensions.resources[platformOs] = co
     } else {
-        if(!rs.nativeLibs) rs.nativeLibs = []
+        if(!rs.nativeLibs) rs.nativeLibs = [] 
         rs.nativeLibs.addAll(nativeLibs)
     }
 }
+
